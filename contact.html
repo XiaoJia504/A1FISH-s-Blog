@@ -132,14 +132,14 @@
             height: 100%;
             background: var(--bg-primary);
             z-index: 9998;
-            opacity: 1;
-            pointer-events: all;
+            opacity: 0;
+            pointer-events: none;
             transition: opacity 0.8s ease;
         }
         
-        .page-transition.fade-out {
-            opacity: 0;
-            pointer-events: none;
+        .page-transition.active {
+            opacity: 1;
+            pointer-events: all;
         }
         
         .marble-bg {
@@ -496,38 +496,51 @@
             transform: translateX(0);
         }
         
-        .back-btn {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            background: none;
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 28px;
+            background-color: transparent;
             border: 1px solid var(--border);
             color: var(--text-primary);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            font-size: 0.9rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 400;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            background-color: var(--bg-secondary);
-            z-index: 10002;
-            opacity: 0;
-            pointer-events: none;
-            backdrop-filter: blur(5px);
         }
         
-        .back-btn.show {
-            opacity: 1;
-            pointer-events: all;
+        .nav-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-tertiary);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            z-index: -1;
         }
         
-        .back-btn:hover {
-            transform: rotate(-15deg);
+        .nav-btn:hover {
             border-color: var(--accent);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover:before {
+            transform: translateX(0);
         }
         
         .theme-toggle {
@@ -593,19 +606,11 @@
                 font-size: 3.5rem;
             }
             
-            .theme-toggle, .back-btn {
+            .theme-toggle {
                 width: 45px;
                 height: 45px;
-            }
-            
-            .theme-toggle {
                 bottom: 20px;
                 right: 20px;
-            }
-            
-            .back-btn {
-                top: 20px;
-                left: 20px;
             }
             
             .contact-content {
@@ -619,6 +624,11 @@
             .loader-content.move-up-left {
                 top: 30px;
                 left: 30px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
             }
         }
         
@@ -762,59 +772,17 @@
                         <i class="fas fa-envelope"></i>
                     </div>
                     <h3 class="contact-title">电子邮件</h3>
-                    <p class="contact-detail">contact@littlejia.com</p>
+                    <p class="contact-detail">2166992869@QQ.COM</p>
                 </div>
-                
-                <div class="contact-card">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <h3 class="contact-title">电话</h3>
-                    <p class="contact-detail">+86 138 0000 0000</p>
-                </div>
-                
-                <div class="contact-card">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 class="contact-title">地址</h3>
-                    <p class="contact-detail">北京市朝阳区创意园区</p>
-                </div>
-            </div>
             
-            <div id="form-message" class="message"></div>
-            
-            <div class="contact-form">
-                <form id="contact-form">
-                    <div class="form-group">
-                        <label class="form-label">姓名</label>
-                        <input type="text" class="form-input" id="name" name="name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">邮箱</label>
-                        <input type="email" class="form-input" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">主题</label>
-                        <input type="text" class="form-input" id="subject" name="subject" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">消息</label>
-                        <textarea class="form-textarea" id="message" name="message" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">发送消息</button>
-                </form>
+            <div class="nav-buttons" style="margin-top: 40px;">
+                <button class="nav-btn" id="home-btn">返回主页</button>
+                <button class="nav-btn" id="portfolio-btn">作品集</button>
+                <button class="nav-btn" id="blog-btn">文章</button>
+                <button class="nav-btn" id="about-btn">关于</button>
             </div>
         </div>
     </div>
-    
-    <button class="back-btn" id="back-btn">
-        <i class="fas fa-arrow-left"></i>
-    </button>
     
     <button class="theme-toggle" id="theme-toggle">
         <i class="fas fa-sun theme-icon"></i>
@@ -822,8 +790,6 @@
     </button>
 
     <script>
-        let isContactPage = true;
-        
         document.addEventListener('DOMContentLoaded', function() {
             createRain();
             
@@ -837,7 +803,6 @@
                 const mainContent = document.querySelector('.main-content');
                 const centerContent = document.getElementById('center-content');
                 const themeToggle = document.getElementById('theme-toggle');
-                const backBtn = document.getElementById('back-btn');
                 
                 loaderContent.classList.add('move-up-left');
                 
@@ -850,13 +815,24 @@
                     setTimeout(() => {
                         centerContent.classList.add('show');
                         themeToggle.classList.add('show');
-                        backBtn.classList.add('show');
                     }, 300);
                 }, 1000);
             }, 2500);
             
-            document.getElementById('back-btn').addEventListener('click', function() {
-                goBackToHome();
+            document.getElementById('home-btn').addEventListener('click', function() {
+                navigateToPage('index.html');
+            });
+            
+            document.getElementById('portfolio-btn').addEventListener('click', function() {
+                navigateToPage('portfolio.html');
+            });
+            
+            document.getElementById('blog-btn').addEventListener('click', function() {
+                navigateToPage('blog.html');
+            });
+            
+            document.getElementById('about-btn').addEventListener('click', function() {
+                navigateToPage('about.html');
             });
         });
         
@@ -946,45 +922,6 @@
             });
         }
         
-        function initContactForm() {
-            const contactForm = document.getElementById('contact-form');
-            const messageDiv = document.getElementById('form-message');
-            
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const subject = document.getElementById('subject').value.trim();
-                const message = document.getElementById('message').value.trim();
-                
-                if (!name || !email || !subject || !message) {
-                    showMessage('请填写所有必填字段', 'error');
-                    return;
-                }
-                
-                if (!isValidEmail(email)) {
-                    showMessage('请输入有效的邮箱地址', 'error');
-                    return;
-                }
-                
-                showMessage('发送中...', 'success');
-                
-                setTimeout(() => {
-                    showMessage('消息发送成功！我会尽快回复您。', 'success');
-                    
-                    contactForm.reset();
-                    
-                    setTimeout(() => {
-                        messageDiv.classList.remove('show');
-                        setTimeout(() => {
-                            messageDiv.className = 'message';
-                            messageDiv.textContent = '';
-                        }, 300);
-                    }, 3000);
-                }, 1500);
-            });
-        }
         
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1002,23 +939,23 @@
             }, 10);
         }
         
-        function goBackToHome() {
+        function navigateToPage(pageUrl) {
             const pageTransition = document.getElementById('page-transition');
             const mainContent = document.querySelector('.main-content');
             const centerContent = document.getElementById('center-content');
             const themeToggle = document.getElementById('theme-toggle');
-            const backBtn = document.getElementById('back-btn');
             
             centerContent.classList.remove('show');
             
             setTimeout(() => {
                 mainContent.classList.remove('show');
+                themeToggle.classList.remove('show');
                 
                 setTimeout(() => {
-                    pageTransition.classList.remove('fade-out');
+                    pageTransition.classList.add('active');
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = pageUrl;
                     }, 800);
                 }, 300);
             }, 300);
