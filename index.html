@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LittleJia</title>
+    <title>LittleJia - 主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -122,6 +122,24 @@
                 clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
                 transform: skew(-45deg) translateX(100%);
             }
+        }
+        
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        
+        .page-transition.active {
+            opacity: 1;
+            pointer-events: all;
         }
         
         .marble-bg {
@@ -313,6 +331,8 @@
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
+            max-width: 100%;
+            padding: 0 20px;
         }
         
         .center-content.show {
@@ -350,6 +370,7 @@
             gap: 20px;
             justify-content: center;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
         
         .nav-btn {
@@ -367,6 +388,7 @@
             text-transform: uppercase;
             font-weight: 400;
             border-radius: 4px;
+            cursor: pointer;
         }
         
         .nav-btn:before {
@@ -548,6 +570,8 @@
 <body>
     <div class="theme-transition-mask" id="theme-transition-mask"></div>
     
+    <div class="page-transition" id="page-transition"></div>
+    
     <div class="gradient-bg"></div>
     
     <div class="marble-bg"></div>
@@ -563,7 +587,7 @@
     <div id="loader">
         <div class="loader-content" id="loader-content">
             <h1 class="loader-title">LittleJia</h1>
-            <p class="loader-subtitle">质感 · 极简 · 思考</p>
+            <p class="loader-subtitle">加载中...</p>
             <div class="loader-progress">
                 <div class="loader-progress-bar"></div>
             </div>
@@ -575,10 +599,10 @@
             <div class="main-title float-animation">LittleJia</div>
             <div class="main-subtitle">探索设计与美学的边界</div>
             <div class="nav-buttons">
-                <a href="#" class="nav-btn">文章</a>
-                <a href="#" class="nav-btn">作品</a>
-                <a href="#" class="nav-btn">关于</a>
-                <a href="#" class="nav-btn">联系</a>
+                <button class="nav-btn" id="contact-btn">联系</button>
+                <button class="nav-btn" id="portfolio-btn">作品集</button>
+                <button class="nav-btn" id="blog-btn">文章</button>
+                <button class="nav-btn" id="about-btn">关于</button>
             </div>
         </div>
     </div>
@@ -615,6 +639,22 @@
                     }, 300);
                 }, 1000);
             }, 2500);
+            
+            document.getElementById('contact-btn').addEventListener('click', function() {
+                navigateToPage('A1FISH-s-Blog/contact.html');
+            });
+            
+            document.getElementById('portfolio-btn').addEventListener('click', function() {
+                navigateToPage('portfolio.html');
+            });
+            
+            document.getElementById('blog-btn').addEventListener('click', function() {
+                navigateToPage('blog.html');
+            });
+            
+            document.getElementById('about-btn').addEventListener('click', function() {
+                navigateToPage('about.html');
+            });
         });
         
         function createRain() {
@@ -703,6 +743,28 @@
             });
         }
         
+        function navigateToPage(pageUrl) {
+            const pageTransition = document.getElementById('page-transition');
+            const mainContent = document.querySelector('.main-content');
+            const centerContent = document.getElementById('center-content');
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            centerContent.classList.remove('show');
+            
+            setTimeout(() => {
+                mainContent.classList.remove('show');
+                themeToggle.classList.remove('show');
+                
+                setTimeout(() => {
+                    pageTransition.classList.add('active');
+                    
+                    setTimeout(() => {
+                        window.location.href = pageUrl;
+                    }, 800);
+                }, 300);
+            }, 300);
+        }
+        
         document.addEventListener('mousemove', function(e) {
             const mainTitle = document.querySelector('.main-title');
             const marbleVeins = document.querySelectorAll('.marble-vein');
@@ -711,7 +773,9 @@
             const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
             const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
             
-            mainTitle.style.transform = `translateY(${yAxis}px) translateX(${xAxis}px)`;
+            if (mainTitle) {
+                mainTitle.style.transform = `translateY(${yAxis}px) translateX(${xAxis}px)`;
+            }
             
             marbleVeins.forEach((vein, index) => {
                 const speed = 0.01 + (index * 0.005);
