@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LittleJia - 联系</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg-primary: #0a0a0a;
+            --dark-bg-secondary: #141414;
+            --dark-bg-tertiary: #1a1a1a;
+            --dark-text-primary: #f0f0f0;
+            --dark-text-secondary: #b0b0b0;
+            --dark-text-tertiary: #888888;
+            --dark-accent: #a0a0a0;
+            --dark-border: #2a2a2a;
+            --dark-card-bg: rgba(30, 30, 30, 0.7);
+            --dark-overlay: rgba(10, 10, 10, 0.85);
+            
+            --light-bg-primary: #f5f5f5;
+            --light-bg-secondary: #f0f0f0;
+            --light-bg-tertiary: #e8e8e8;
+            --light-text-primary: #1a1a1a;
+            --light-text-secondary: #555555;
+            --light-text-tertiary: #777777;
+            --light-accent: #666666;
+            --light-border: #d0d0d0;
+            --light-card-bg: rgba(255, 255, 255, 0.8);
+            --light-overlay: rgba(245, 245, 245, 0.9);
+            
+            --transition-speed: 0.5s;
+            --border-radius-sm: 4px;
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --shadow-strong: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            font-weight: 300;
+            transition: color 0.8s ease;
+        }
+        
+        .light-mode {
+            --bg-primary: var(--light-bg-primary);
+            --bg-secondary: var(--light-bg-secondary);
+            --bg-tertiary: var(--light-bg-tertiary);
+            --text-primary: var(--light-text-primary);
+            --text-secondary: var(--light-text-secondary);
+            --text-tertiary: var(--light-text-tertiary);
+            --accent: var(--light-accent);
+            --border: var(--light-border);
+            --card-bg: var(--light-card-bg);
+            --overlay: var(--light-overlay);
+        }
+        
+        .dark-mode {
+            --bg-primary: var(--dark-bg-primary);
+            --bg-secondary: var(--dark-bg-secondary);
+            --bg-tertiary: var(--dark-bg-tertiary);
+            --text-primary: var(--dark-text-primary);
+            --text-secondary: var(--dark-text-secondary);
+            --text-tertiary: var(--dark-text-tertiary);
+            --accent: var(--dark-accent);
+            --border: var(--dark-border);
+            --card-bg: var(--dark-card-bg);
+            --overlay: var(--dark-overlay);
+        }
+        
+        .theme-transition-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10001;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-color: var(--transition-color);
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            transform: skew(0deg);
+        }
+        
+        .theme-transition-mask.active {
+            opacity: 1;
+            animation: diagonalSkewReveal 1.5s ease forwards;
+        }
+        
+        @keyframes diagonalSkewReveal {
+            0% {
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transform: skew(-45deg) translateX(-100%);
+            }
+            20% {
+                transform: skew(-45deg) translateX(-80%);
+            }
+            50% {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                transform: skew(-45deg) translateX(0%);
+            }
+            80% {
+                transform: skew(-45deg) translateX(20%);
+            }
+            100% {
+                clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+                transform: skew(-45deg) translateX(100%);
+            }
+        }
+        
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 9998;
+            opacity: 1;
+            pointer-events: all;
+            transition: opacity 0.8s ease;
+        }
+        
+        .page-transition.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .marble-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(120, 120, 120, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(100, 100, 100, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(80, 80, 80, 0.03) 0%, transparent 30%),
+                linear-gradient(45deg, transparent 49%, rgba(150, 150, 150, 0.03) 49%, rgba(150, 150, 150, 0.03) 51%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(130, 130, 130, 0.03) 49%, rgba(130, 130, 130, 0.03) 51%, transparent 51%);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+            opacity: 0.7;
+            transition: background-color 0.8s ease;
+        }
+        
+        #rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .raindrop {
+            position: absolute;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, var(--rain-color));
+            animation: fall linear infinite;
+            opacity: var(--rain-opacity);
+            border-radius: 1px;
+            transition: opacity 0.8s ease, background 0.8s ease;
+        }
+        
+        .light-mode .raindrop {
+            --rain-color: rgba(40, 40, 40, 0.8);
+            --rain-opacity: 0.3;
+        }
+        
+        .dark-mode .raindrop {
+            --rain-color: rgba(200, 200, 200, 0.7);
+            --rain-opacity: 0.25;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .ripple {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--rain-color);
+            opacity: 0;
+            animation: ripple 1.5s ease-out infinite;
+            transition: background 0.8s ease;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(8);
+                opacity: 0;
+            }
+        }
+        
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1.2s ease, visibility 1.2s ease, background-color 0.8s ease;
+        }
+        
+        .loader-content {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 1s ease;
+        }
+        
+        .loader-content.move-up-left {
+            top: 40px;
+            left: 40px;
+            transform: translate(0, 0);
+        }
+        
+        .loader-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            letter-spacing: -1px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+            transition: color 0.8s ease;
+        }
+        
+        .loader-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.5s forwards;
+            transition: color 0.8s ease;
+        }
+        
+        .loader-progress {
+            width: 200px;
+            height: 1px;
+            background-color: var(--border);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1px;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.8s forwards;
+            transition: background-color 0.8s ease;
+        }
+        
+        .loader-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent);
+            animation: loadProgress 2.5s ease-in-out forwards;
+            transition: background-color 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        .main-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        
+        .main-content.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .center-content {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            max-width: 100%;
+            padding: 0 20px;
+        }
+        
+        .center-content.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .contact-content {
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .page-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            text-align: center;
+            transition: color 0.8s ease;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 3rem;
+            transition: color 0.8s ease;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .contact-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--accent);
+        }
+        
+        .contact-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .contact-detail {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .contact-form {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(160, 160, 160, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 400;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .submit-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-tertiary);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            z-index: -1;
+        }
+        
+        .submit-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .submit-btn:hover:before {
+            transform: translateX(0);
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background-color: var(--bg-secondary);
+            z-index: 10002;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .back-btn.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .back-btn:hover {
+            transform: rotate(-15deg);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background-color: var(--bg-secondary);
+            z-index: 10002;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .theme-toggle.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-icon {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .dark-mode .fa-sun {
+            display: none;
+        }
+        
+        .dark-mode .fa-moon {
+            display: inline-block;
+        }
+        
+        .light-mode .fa-sun {
+            display: inline-block;
+        }
+        
+        .light-mode .fa-moon {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                font-size: 3rem;
+            }
+            
+            .loader-title {
+                font-size: 3.5rem;
+            }
+            
+            .theme-toggle, .back-btn {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .theme-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .back-btn {
+                top: 20px;
+                left: 20px;
+            }
+            
+            .contact-content {
+                padding: 20px;
+            }
+            
+            .contact-form {
+                padding: 25px;
+            }
+            
+            .loader-content.move-up-left {
+                top: 30px;
+                left: 30px;
+            }
+        }
+        
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            z-index: -3;
+            transition: background 0.8s ease;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .marble-vein {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.03;
+            transition: opacity 0.8s ease, background 0.8s ease;
+        }
+        
+        .vein-1 {
+            top: 10%;
+            left: 15%;
+            width: 300px;
+            height: 500px;
+            background: linear-gradient(45deg, transparent 30%, var(--accent) 50%, transparent 70%);
+            transform: rotate(20deg);
+        }
+        
+        .vein-2 {
+            bottom: 20%;
+            right: 10%;
+            width: 250px;
+            height: 400px;
+            background: linear-gradient(-30deg, transparent 40%, var(--accent) 60%, transparent 80%);
+            transform: rotate(-15deg);
+        }
+        
+        .vein-3 {
+            top: 40%;
+            left: 60%;
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(60deg, transparent 20%, var(--accent) 40%, transparent 60%);
+            transform: rotate(10deg);
+        }
+        
+        .sheen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.3;
+            transition: opacity 0.8s ease, background 0.8s ease;
+        }
+        
+        .light-mode .sheen {
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+            opacity: 0.4;
+        }
+        
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius-sm);
+            text-align: center;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .success {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+        
+        .error {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-transition-mask" id="theme-transition-mask"></div>
+    
+    <div class="page-transition" id="page-transition"></div>
+    
+    <div class="gradient-bg"></div>
+    
+    <div class="marble-bg"></div>
+    
+    <div class="marble-vein vein-1"></div>
+    <div class="marble-vein vein-2"></div>
+    <div class="marble-vein vein-3"></div>
+    
+    <div class="sheen"></div>
+    
+    <div id="rain-container"></div>
+    
+    <div id="loader">
+        <div class="loader-content" id="loader-content">
+            <h1 class="loader-title">LittleJia</h1>
+            <p class="loader-subtitle">联系页面加载中...</p>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="center-content contact-content" id="center-content">
+            <h1 class="page-header float-animation">联系我</h1>
+            <p class="page-subtitle">分享想法 · 探讨合作 · 交流创意</p>
+            
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="contact-title">电子邮件</h3>
+                    <p class="contact-detail">contact@littlejia.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="contact-title">电话</h3>
+                    <p class="contact-detail">+86 138 0000 0000</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="contact-title">地址</h3>
+                    <p class="contact-detail">北京市朝阳区创意园区</p>
+                </div>
+            </div>
+            
+            <div id="form-message" class="message"></div>
+            
+            <div class="contact-form">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label class="form-label">姓名</label>
+                        <input type="text" class="form-input" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">邮箱</label>
+                        <input type="email" class="form-input" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">主题</label>
+                        <input type="text" class="form-input" id="subject" name="subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">消息</label>
+                        <textarea class="form-textarea" id="message" name="message" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">发送消息</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <button class="back-btn" id="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    
+    <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-sun theme-icon"></i>
+        <i class="fas fa-moon theme-icon"></i>
+    </button>
+
+    <script>
+        let isContactPage = true;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createRain();
+            
+            initThemeToggle();
+            
+            initContactForm();
+            
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                const loaderContent = document.getElementById('loader-content');
+                const mainContent = document.querySelector('.main-content');
+                const centerContent = document.getElementById('center-content');
+                const themeToggle = document.getElementById('theme-toggle');
+                const backBtn = document.getElementById('back-btn');
+                
+                loaderContent.classList.add('move-up-left');
+                
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                    
+                    mainContent.classList.add('show');
+                    
+                    setTimeout(() => {
+                        centerContent.classList.add('show');
+                        themeToggle.classList.add('show');
+                        backBtn.classList.add('show');
+                    }, 300);
+                }, 1000);
+            }, 2500);
+            
+            document.getElementById('back-btn').addEventListener('click', function() {
+                goBackToHome();
+            });
+        });
+        
+        function createRain() {
+            const rainContainer = document.getElementById('rain-container');
+            const rainCount = 70;
+            
+            for (let i = 0; i < rainCount; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.classList.add('raindrop');
+                
+                const left = Math.random() * 100;
+                const top = Math.random() * -100;
+                const duration = 1.5 + Math.random() * 2;
+                const delay = Math.random() * 5;
+                const height = 40 + Math.random() * 90;
+                const width = 1.5 + Math.random() * 3;
+                
+                raindrop.style.left = `${left}%`;
+                raindrop.style.top = `${top}%`;
+                raindrop.style.height = `${height}px`;
+                raindrop.style.width = `${width}px`;
+                raindrop.style.animationDuration = `${duration}s`;
+                raindrop.style.animationDelay = `${delay}s`;
+                
+                if (Math.random() > 0.7) {
+                    setTimeout(() => {
+                        createRipple(left, top + height);
+                    }, delay * 1000 + (duration * 1000 * Math.random()));
+                }
+                
+                rainContainer.appendChild(raindrop);
+            }
+        }
+        
+        function createRipple(left, top) {
+            const rainContainer = document.getElementById('rain-container');
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple');
+            
+            ripple.style.left = `${left}%`;
+            ripple.style.top = `${top}%`;
+            
+            rainContainer.appendChild(ripple);
+            
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 1500);
+        }
+        
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeMask = document.getElementById('theme-transition-mask');
+            const body = document.body;
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                body.classList.remove('dark-mode', 'light-mode');
+                body.classList.add(savedTheme);
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                themeToggle.disabled = true;
+                
+                const isDarkMode = body.classList.contains('dark-mode');
+                const targetTheme = isDarkMode ? 'light-mode' : 'dark-mode';
+                const transitionColor = isDarkMode ? 
+                    'rgba(245, 245, 245, 0.95)' : 
+                    'rgba(10, 10, 10, 0.95)';
+                
+                themeMask.style.setProperty('--transition-color', transitionColor);
+                
+                themeMask.classList.add('active');
+                
+                setTimeout(() => {
+                    body.classList.remove('dark-mode', 'light-mode');
+                    body.classList.add(targetTheme);
+                    localStorage.setItem('theme', targetTheme);
+                }, 750);
+                
+                setTimeout(() => {
+                    themeMask.classList.remove('active');
+                    themeToggle.disabled = false;
+                }, 1500);
+            });
+        }
+        
+        function initContactForm() {
+            const contactForm = document.getElementById('contact-form');
+            const messageDiv = document.getElementById('form-message');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+                
+                if (!name || !email || !subject || !message) {
+                    showMessage('请填写所有必填字段', 'error');
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showMessage('请输入有效的邮箱地址', 'error');
+                    return;
+                }
+                
+                showMessage('发送中...', 'success');
+                
+                setTimeout(() => {
+                    showMessage('消息发送成功！我会尽快回复您。', 'success');
+                    
+                    contactForm.reset();
+                    
+                    setTimeout(() => {
+                        messageDiv.classList.remove('show');
+                        setTimeout(() => {
+                            messageDiv.className = 'message';
+                            messageDiv.textContent = '';
+                        }, 300);
+                    }, 3000);
+                }, 1500);
+            });
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('form-message');
+            
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            
+            setTimeout(() => {
+                messageDiv.classList.add('show');
+            }, 10);
+        }
+        
+        function goBackToHome() {
+            const pageTransition = document.getElementById('page-transition');
+            const mainContent = document.querySelector('.main-content');
+            const centerContent = document.getElementById('center-content');
+            const themeToggle = document.getElementById('theme-toggle');
+            const backBtn = document.getElementById('back-btn');
+            
+            centerContent.classList.remove('show');
+            
+            setTimeout(() => {
+                mainContent.classList.remove('show');
+                
+                setTimeout(() => {
+                    pageTransition.classList.remove('fade-out');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 800);
+                }, 300);
+            }, 300);
+        }
+        
+        document.addEventListener('mousemove', function(e) {
+            const pageHeader = document.querySelector('.page-header');
+            const marbleVeins = document.querySelectorAll('.marble-vein');
+            const sheen = document.querySelector('.sheen');
+            
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+            
+            if (pageHeader) {
+                pageHeader.style.transform = `translateY(${yAxis}px) translateX(${xAxis}px)`;
+            }
+            
+            marbleVeins.forEach((vein, index) => {
+                const speed = 0.01 + (index * 0.005);
+                const veinX = (window.innerWidth / 2 - e.pageX) * speed;
+                const veinY = (window.innerHeight / 2 - e.pageY) * speed;
+                
+                vein.style.transform = `translate(${veinX}px, ${veinY}px) rotate(${index % 2 === 0 ? '20deg' : '-15deg'})`;
+            });
+            
+            const sheenX = (e.pageX / window.innerWidth) * 100;
+            const sheenY = (e.pageY / window.innerHeight) * 100;
+            
+            sheen.style.background = `linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, ${document.body.classList.contains('light-mode') ? 0.05 : 0.02}) 50%, transparent 70%)`;
+            sheen.style.backgroundPosition = `${sheenX}% ${sheenY}%`;
+        });
+        
+        setInterval(() => {
+            const rainContainer = document.getElementById('rain-container');
+            const raindropCount = document.querySelectorAll('.raindrop').length;
+            
+            if (raindropCount < 50) {
+                const newRaindrop = document.createElement('div');
+                newRaindrop.classList.add('raindrop');
+                
+                const left = Math.random() * 100;
+                const duration = 1.5 + Math.random() * 2;
+                const height = 40 + Math.random() * 90;
+                const width = 1.5 + Math.random() * 3;
+                
+                newRaindrop.style.left = `${left}%`;
+                newRaindrop.style.top = `-100px`;
+                newRaindrop.style.height = `${height}px`;
+                newRaindrop.style.width = `${width}px`;
+                newRaindrop.style.animationDuration = `${duration}s`;
+                
+                rainContainer.appendChild(newRaindrop);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
